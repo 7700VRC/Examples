@@ -2658,8 +2658,9 @@ Linker script and memory map
                 0x00000000038001a0        0x4 build/src/main.o
                 0x00000000038001a0                auton()
  .text._Z6driverv
-                0x00000000038001a4       0xc4 build/src/main.o
+                0x00000000038001a4       0xc0 build/src/main.o
                 0x00000000038001a4                driver()
+ *fill*         0x0000000003800264        0x4 
  .text.main     0x0000000003800268       0x68 build/src/main.o
                 0x0000000003800268                main
  .text._GLOBAL__sub_I_main.cpp

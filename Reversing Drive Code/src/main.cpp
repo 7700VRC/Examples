@@ -66,13 +66,13 @@ void driver() {
       dir=-1;
       Brain.Screen.printAt(1, 40, "I am driving Backward <<");
       }
-    lstick=Controller1.Axis3.position();
-    rstick=Controller1.Axis2.position();
+    lstick=dir*Controller1.Axis3.position();
+    rstick=dir*Controller1.Axis2.position();
     if(dir==1){
       driveVolts(lstick, rstick, 10);
     }
     else{
-    driveVolts(dir*rstick, dir*lstick, 10);  //this will use the - the stick value if in backward mode and flip right and left
+    driveVolts(rstick, lstick, 10);  
      }
   }
 }
