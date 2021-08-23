@@ -29,8 +29,8 @@ float pi=3.14;
 // Custom Functions
 void driveVolts(int lspeed, int rspeed, int wt)
 {
-  LM.spin(forward, lspeed/100*12, volt);
-  RM.spin(forward, rspeed*12, volt);
+  LM.spin(forward, lspeed*120, voltageUnits::mV);
+  RM.spin(forward, rspeed*120, voltageUnits::mV);
   wait(wt, msec);
 }
 
@@ -38,16 +38,6 @@ void driveVolts(int lspeed, int rspeed, int wt)
 void pre_auton() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
-  int l=-100;
-  int r= l;
-  int w =100;
-  while (l<=100)
-  {
-driveVolts(l, r, w);
-l++;
-r=l;
-  }
-  driveVolts(0, 0, 0);
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting initial positions, ...
 }
