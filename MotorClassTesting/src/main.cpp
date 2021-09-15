@@ -25,13 +25,16 @@ competition Competition;
 float pi = 3.14;
 
 // Custom Functions
-void moveMotor(int sp, float turns = 0) {
+void moveMotor(int sp, int a,float turns = 0) {
   Brain.Screen.printAt(1, 40, "encoder = %.2f  ", Motor.position(rev));
   Motor.setVelocity(sp, percent);
   if (turns == 0) {
     Motor.spin(forward);
-  } else {
+  } else if (a==1){
     Motor.spinFor(forward, turns, rev);
+  }
+  else {
+    Motor.rotateFor( turns, rev);
   }
   Brain.Screen.printAt(1, 80, "encoder = %.2f  ", Motor.position(rev));
 }
@@ -45,9 +48,9 @@ Brain.Screen.printAt(1, 20, "Pre- Auton encoder = %.2f  ", Motor.position(rev));
 }
 
 void auton() {
-  moveMotor(50,2.3);
+  moveMotor(50,2,2.3);
   wait(300, msec);
-  moveMotor(50,-2.0);
+  moveMotor(50,0,-2.0);
   Brain.Screen.printAt(1, 100, "done");
 }
 
