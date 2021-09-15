@@ -26,28 +26,29 @@ float pi = 3.14;
 
 // Custom Functions
 void moveMotor(int sp, float turns = 0) {
-  Brain.Screen.printAt(1, 40, "encoder = %f.2.  ", Motor.position(rev));
+  Brain.Screen.printAt(1, 40, "encoder = %.2f  ", Motor.position(rev));
   Motor.setVelocity(sp, percent);
   if (turns == 0) {
     Motor.spin(forward);
   } else {
     Motor.spinFor(forward, turns, rev);
   }
-  Brain.Screen.printAt(1, 80, "encoder = %f.2.  ", Motor.position(rev));
+  Brain.Screen.printAt(1, 80, "encoder = %.2f  ", Motor.position(rev));
 }
 
 void pre_auton() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
-Brain.Screen.printAt(1, 20, "Pre- Auton encoder = %f.2.  ", Motor.position(rev));
+Brain.Screen.printAt(1, 20, "Pre- Auton encoder = %.2f  ", Motor.position(rev));
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting initial positions, ...
 }
 
 void auton() {
-  moveMotor(50);
-  wait(1000, msec);
-  moveMotor(0);
+  moveMotor(50,2.3);
+  wait(300, msec);
+  moveMotor(50,-2.0);
+  Brain.Screen.printAt(1, 100, "done");
 }
 
 void driver() {
