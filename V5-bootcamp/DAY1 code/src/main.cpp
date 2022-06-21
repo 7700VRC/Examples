@@ -27,11 +27,11 @@ float Pi=3.14;
 
 
 // Custom Functions
-void drive(int lspeed,int rspeed,int wt)
+void drive(int lspeed, int rspeed, int wt)
 {
-LeftMotor.spin(forward, lspeed, percent);
-RightMotor.spin(forward, rspeed, percent);
-wait(wt, msec);
+  LeftMotor.spin(forward, lspeed, percent);
+  RightMotor.spin(forward, rspeed, percent);
+  wait(wt,msec);
 }
 
 
@@ -48,12 +48,10 @@ void auton() {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
-Brain.Screen.printAt(1, 20, "Auton is Running");
-drive(50,50,1000);
-
-drive(50,-50,500);
-
-drive(0,0,0);
+Brain.Screen.printAt(1, 20, "Auton is running");
+drive(50, 50, 1000);
+drive(50, -50, 500);
+drive(0, 0, 0);
 }
 
 
