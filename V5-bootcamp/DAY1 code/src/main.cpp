@@ -11,6 +11,8 @@
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
 // Controller1          controller                    
+// LeftMotor            motor         1               
+// RightMotor           motor         10              
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
@@ -25,7 +27,12 @@ float Pi=3.14;
 
 
 // Custom Functions
-
+void drive(int lspeed,int rspeed,int wt)
+{
+LeftMotor.spin(forward, lspeed, percent);
+RightMotor.spin(forward, rspeed, percent);
+wait(wt, msec);
+}
 
 
 void pre_auton() {
@@ -41,6 +48,12 @@ void auton() {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
+Brain.Screen.printAt(1, 20, "Auton is Running");
+drive(50,50,1000);
+
+drive(50,-50,500);
+
+drive(0,0,0);
 }
 
 
