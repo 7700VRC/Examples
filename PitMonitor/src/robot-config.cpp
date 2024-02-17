@@ -13,8 +13,8 @@ motor LeftFront = motor(PORT2, ratio18_1, true);
 motor LeftBack = motor(PORT4, ratio18_1, false);
 motor RightFront = motor(PORT1, ratio18_1, false);
 motor RightBack = motor(PORT3, ratio18_1, true);
-motor Flywheel1 = motor(PORT5, ratio6_1, false);
-motor Flywheel2 = motor(PORT7, ratio6_1, true);
+motor LeftMid = motor(PORT5, ratio18_1, false);
+motor RightMid = motor(PORT7, ratio18_1, true);
 
 // VEXcode generated functions
 // define variable for remote controller enable/disable

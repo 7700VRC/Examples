@@ -15,8 +15,8 @@
 // LeftBack             motor         4
 // RightFront           motor         1
 // RightBack            motor         3
-// Flywheel1            motor         5
-// Flywheel2            motor         7
+// LeftMid              motor         5
+// RightMid             motor         7
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
@@ -29,97 +29,93 @@ competition Competition;
 // define your global instances of motors and other devices here
 
 //----------Custom Functions----------
-void pitMonitor() {
-  double LeftFrontTemp = LeftFront.temperature(celsius);
-  double RightFrontTemp = RightFront.temperature(celsius);
-  double LeftBackTemp = LeftBack.temperature(celsius);
-  double RightBackTemp = RightBack.temperature(celsius);
-  double F1Temp = Flywheel1.temperature(celsius);
-  double F2Temp = Flywheel2.temperature(celsius);
-
-  Brain.Screen.setCursor(5, 1);
-  Brain.Screen.print("%.1f", LeftFrontTemp);
-
-  Brain.Screen.setCursor(5, 6);
-  Brain.Screen.print("%.1f", RightFrontTemp);
-
-  Brain.Screen.setCursor(9, 1);
-  Brain.Screen.print("%.1f", LeftBackTemp);
-
-  Brain.Screen.setCursor(9, 6);
-  Brain.Screen.print("%.1f", RightBackTemp);
-
-  Brain.Screen.setCursor(4, 15);
-  Brain.Screen.print("%.1f", F1Temp);
-
-  Brain.Screen.setCursor(5, 15);
-  Brain.Screen.print("%.1f", F2Temp);
-
-  if (LeftFrontTemp < 45) {
+int YOFFSET = 20;
+void MotorDisplay(double y, double curr, double temp) {
+  Brain.Screen.setFillColor(transparent);
+  Brain.Screen.printAt(5, YOFFSET + y, "Current: %.1fA", curr);
+  if (curr < 1)
     Brain.Screen.setFillColor(green);
-    Brain.Screen.drawRectangle(1, 50, 20, 30);
-  } else if (LeftFrontTemp <= 50 && LeftFrontTemp >= 45) {
+  else if (curr >= 1 && curr <= 2.5)
     Brain.Screen.setFillColor(yellow);
-    Brain.Screen.drawRectangle(1, 50, 20, 30);
-  } else {
+  else
     Brain.Screen.setFillColor(red);
-    Brain.Screen.drawRectangle(1, 50, 20, 30);
-  }
+  Brain.Screen.drawRectangle(140, YOFFSET + y - 15, 15, 15);
 
-  if (RightFrontTemp < 45) {
+  Brain.Screen.setFillColor(transparent);
+  Brain.Screen.printAt(160, YOFFSET + y, "Temp: %.1fC", temp);
+  if (temp < 45)
     Brain.Screen.setFillColor(green);
-    Brain.Screen.drawRectangle(50, 50, 20, 30);
-  } else if (RightFrontTemp  <= 50 && RightFrontTemp >= 45) {
+  else if (temp <= 50 && temp >= 45)
+    // TRUE and TRUE --> True
+    // TRUE and FALSE --> False
+    // FALSE and FALSE --> False
     Brain.Screen.setFillColor(yellow);
-    Brain.Screen.drawRectangle(50, 50, 20, 30);
-  } else {
+  else
     Brain.Screen.setFillColor(red);
-    Brain.Screen.drawRectangle(50, 50, 20, 30);
-  }
+  Brain.Screen.drawRectangle(275, YOFFSET + y - 15, 15, 15);
+  Brain.Screen.setFillColor(transparent);
+}
 
-  if (LeftBackTemp < 45) {
-    Brain.Screen.setFillColor(green);
-    Brain.Screen.drawRectangle(1, 125, 20, 30);
-  } else if (LeftBackTemp  <= 50 && LeftBackTemp >= 45) {
-    Brain.Screen.setFillColor(yellow);
-    Brain.Screen.drawRectangle(1, 125, 20, 30);
-  } else {
-    Brain.Screen.setFillColor(red);
-    Brain.Screen.drawRectangle(1, 125, 20, 30);
-  }
+// Displays information on the brain
+void Display() {
+  double leftFrontCurr = LeftFront.current(amp);
+  double leftFrontTemp = LeftFront.temperature(celsius);
+  double leftBackCurr = LeftBack.current(amp);
+  double leftBackTemp = LeftBack.temperature(celsius);
+  double leftMidCurr = LeftMid.current(amp);
+  double leftMidTemp = LeftMid.temperature(celsius);
+  double rightFrontCurr = RightFront.current(amp);
+  double rightFrontTemp = RightFront.temperature(celsius);
+  double rightBackCurr = RightBack.current(amp);
+  double rightBackTemp = RightBack.temperature(celsius);
+  double rightMidCurr = RightMid.current(amp);
+  double rightMidTemp = RightMid.temperature(celsius);
 
-  if (RightBackTemp < 45) {
-    Brain.Screen.setFillColor(green);
-    Brain.Screen.drawRectangle(50, 125, 20, 30);
-  } else if (RightBackTemp  <= 50 && RightBackTemp >= 45) {
-    Brain.Screen.setFillColor(yellow);
-    Brain.Screen.drawRectangle(50, 125, 20, 30);
-  } else {
-    Brain.Screen.setFillColor(red);
-    Brain.Screen.drawRectangle(50, 125, 20, 30);
-  }
+  if (LeftFront.installed()) {
+    MotorDisplay(1, leftFrontCurr, leftFrontTemp);
+    Brain.Screen.printAt(300, YOFFSET + 1, "LeftFront");
+  } else
+    Brain.Screen.printAt(5, YOFFSET + 1, "LeftFront Problem");
 
-  if (F1Temp < 45) {
-    Brain.Screen.setFillColor(green);
-    Brain.Screen.drawRectangle(125, 60, 10, 15);
-  } else if (F1Temp  <= 50 && F1Temp >= 45) {
-    Brain.Screen.setFillColor(yellow);
-    Brain.Screen.drawRectangle(125, 60, 10, 15);
-  } else {
-    Brain.Screen.setFillColor(red);
-    Brain.Screen.drawRectangle(125, 60, 10, 15);
-  }
+  if (LeftBack.installed()) {
+    MotorDisplay(31, leftBackCurr, leftBackTemp);
+    Brain.Screen.printAt(300, YOFFSET + 31, "LeftBack");
+  } else
+    Brain.Screen.printAt(5, YOFFSET + 31, "LeftBack Problem");
 
-  if (F2Temp < 45) {
-    Brain.Screen.setFillColor(green);
-    Brain.Screen.drawRectangle(125, 85, 10, 15);
-  } else if (F2Temp  <= 50 && F2Temp >= 45) {
-    Brain.Screen.setFillColor(yellow);
-    Brain.Screen.drawRectangle(125, 85, 10, 15);
-  } else {
-    Brain.Screen.setFillColor(red);
-    Brain.Screen.drawRectangle(125, 85, 10, 15);
-  }
+  if (RightFront.installed()) {
+    MotorDisplay(61, rightFrontCurr, rightFrontTemp);
+    Brain.Screen.printAt(300, YOFFSET + 61, "RightFront");
+  } else
+    Brain.Screen.printAt(5, YOFFSET + 61, "RightFront Problem");
+
+  if (RightBack.installed()) {
+    MotorDisplay(91, rightBackCurr, rightBackTemp);
+    Brain.Screen.printAt(300, YOFFSET + 91, "RightBack");
+  } else
+    Brain.Screen.printAt(5, YOFFSET + 91, "RightBack Problem");
+
+  if (LeftMid.installed()) {
+    MotorDisplay(31, leftMidCurr, leftMidTemp);
+    Brain.Screen.printAt(300, YOFFSET + 121, "LeftMid");
+  } else
+    Brain.Screen.printAt(5, YOFFSET + 121, "LeftMid Problem");
+  if (RightMid.installed()) {
+    MotorDisplay(31, rightMidCurr, rightMidTemp);
+    Brain.Screen.printAt(300, YOFFSET + 151, "RightMid");
+  } else
+    Brain.Screen.printAt(5, YOFFSET + 151, "RightMid Problem");
+}
+void DriveVolts(double lspeed, double rspeed, int wt) {
+  lspeed = lspeed * 120;
+  rspeed = rspeed * 120;
+  LeftFront.spin(forward, lspeed, voltageUnits::mV);
+  LeftMid.spin(forward, lspeed, voltageUnits::mV);
+  LeftBack.spin(forward, lspeed, voltageUnits::mV);
+  RightFront.spin(forward, rspeed, voltageUnits::mV);
+  RightMid.spin(forward, rspeed, voltageUnits::mV);
+  RightBack.spin(forward, rspeed, voltageUnits::mV);
+  task::sleep(wt);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -141,9 +137,10 @@ void pre_auton(void) {
 }
 
 void drivercontrol(void) {
-  while(true){
-    pitMonitor();
-    wait(1000, msec);
+  while (true) {
+    DriveVolts(Controller1.Axis3.position(), Controller1.Axis2.position(), 10);
+    Display();
+    wait(20, msec);
   }
 }
 
