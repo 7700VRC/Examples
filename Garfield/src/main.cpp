@@ -20,6 +20,8 @@ controller Controller1=controller(primary);
 motor RDR4B=motor(PORT10,ratio36_1,true);
 motor LDR4B=motor(PORT12,ratio36_1,false);
 
+motor29 Rpunch=motor29(Brain.ThreeWirePort.A,false);
+motor29 Lpunch=motor29(Brain.ThreeWirePort.A,true);
 
 void dr4b(int speed, int wt=0){
   speed=speed*120;
@@ -87,7 +89,10 @@ void usercontrol(void) {
       dr4bBrake();
     }
 
-    wait(20, msec); // Sleep the task for a short amount of time to
+Rpunch.spin(forward,Controller1.Axis2.position(pct),pct);
+Lpunch.spin(forward,Controller1.Axis3.position(pct),pct);
+
+    wait(10, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
   }
 }
