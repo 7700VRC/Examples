@@ -17,11 +17,15 @@ competition Competition;
 // define your global instances of motors and other devices here
 brain Brain;
 controller Controller1=controller(primary);
-motor RDR4B=motor(PORT10,ratio36_1,true);
-motor LDR4B=motor(PORT12,ratio36_1,false);
+motor RDR4B=motor(PORT1,ratio36_1,false);
+motor LDR4B=motor(PORT2,ratio36_1,true);
 
-motor29 Rpunch=motor29(Brain.ThreeWirePort.A,false);
-motor29 Lpunch=motor29(Brain.ThreeWirePort.A,true);
+motor Rpunch=motor(PORT5,ratio18_1,true);
+motor Lpunch=motor(PORT4,ratio18_1,true);
+
+motor29 LM=motor29(Brain.ThreeWirePort.F,false);
+motor29 RM=motor29(Brain.ThreeWirePort.E,false);
+
 
 void dr4b(int speed, int wt=0){
   speed=speed*120;
@@ -79,18 +83,37 @@ void autonomous(void) {
 void usercontrol(void) {
   // User control code here, inside the loop
   while (1) {
-    if (Controller1.ButtonR1.pressing()){
-      dr4b(50,10);
+    if (Controller1.ButtonUp.pressing()){
+      dr4b(100,10);
     }
-    else if(Controller1.ButtonR2.pressing()){
-      dr4b(-50,10);
+    else if(Controller1.ButtonDown.pressing()){
+      dr4b(-100,10);
     }
     else{
       dr4bBrake();
     }
+       if (Controller1.ButtonR1.pressing()){
+      Rpunch.spin(forward,100,pct);
+    }
+    else if(Controller1.ButtonR2.pressing()){
+       Rpunch.spin(forward,-100,pct);
+    }
+    else{
+      Rpunch.stop();
+    }
+    
+    if (Controller1.ButtonL1.pressing()){
+      Lpunch.spin(forward,100,pct);
+    }
+    else if(Controller1.ButtonL2.pressing()){
+       Lpunch.spin(forward,-100,pct);
+    }
+    else{
+      Lpunch.stop();
+    }
 
-Rpunch.spin(forward,Controller1.Axis2.position(pct),pct);
-Lpunch.spin(forward,Controller1.Axis3.position(pct),pct);
+LM.spin(forward,Controller1.Axis3.position(),pct);
+RM.spin(forward,Controller1.Axis2.position(),pct);
 
     wait(10, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
