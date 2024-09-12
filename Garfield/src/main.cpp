@@ -17,10 +17,10 @@ competition Competition;
 // define your global instances of motors and other devices here
 brain Brain;
 controller Controller1=controller(primary);
-motor RDR4B=motor(PORT1,ratio36_1,false);
+motor RDR4B=motor(PORT5,ratio36_1,false);
 motor LDR4B=motor(PORT2,ratio36_1,true);
 
-motor Rpunch=motor(PORT5,ratio18_1,true);
+motor Rpunch=motor(PORT19,ratio18_1,false);
 motor Lpunch=motor(PORT4,ratio18_1,true);
 
 motor29 LM=motor29(Brain.ThreeWirePort.F,false);
