@@ -89,27 +89,63 @@ using namespace vex;
 // Begin project code
 
 float getRedRingX(){
+  float x;
   AIVision1.takeSnapshot(aivision::objdesc(redRing));
-  float x=AIVision1.objects[0].centerX;
+  wait(20,msec);
+   x=AIVision1.objects[0].centerX;
+  Brain.Screen.printAt(1,40,"0 Ring x =  %.2f   ",x);
+   x=AIVision1.objects[1].centerX;
+  Brain.Screen.printAt(1,60,"1 Ring x =  %.2f   ",x);
   return x;
 }
+
+
 
 void preAutonomous(void) {
   // actions to do when the program starts
   Brain.Screen.clearScreen();
-  Brain.Screen.print("pre auton code");
-  wait(1, seconds);
+  Brain.Screen.printAt(1,20,"pre auton code");
+ 
+    float x;
+  while (true) {
+    Brain.Screen.clearScreen();
+    Brain.Screen.setCursor(1, 1);
+    // Take a snapshot of all AI Classifications.
+    AIVision1.takeSnapshot(aivision::ALL_AIOBJS);
+    // Check to see if an AI Classification exists in this snapshot.
+    if (AIVision1.objectCount > 0) {
+      // Determine which AI Classification is detected.
+      if (AIVision1.objects[0].id == redRing) {
+        // Conditional based on finding a redRing.
+        Brain.Screen.print("redRing found");
+           x=AIVision1.objects[0].centerX;
+  Brain.Screen.printAt(1,40,"red Ring x =  %.2f   ",x);
+      } else if (AIVision1.objects[0].id == blueRing) {
+        // Conditional based on finding a blueRing.
+        Brain.Screen.print("blueRing found");
+                   x=AIVision1.objects[0].centerX;
+  Brain.Screen.printAt(1,60,"blue Ring x =  %.2f   ",x);
+      } else {
+        // Else condition will print that an AI Classification is detected but it does not match the above cases.
+        Brain.Screen.print("Other Object Found");
+      }
+    }
+    else {
+      // If no AI Classifications are found in this snapshot, display a message.
+      Brain.Screen.print("No Object Found");
+    }
+    // Wait some time and restart loop.
+    wait(0.3, seconds);
+  wait(5, msec);
+  }
 }
 
 void autonomous(void) {
   Brain.Screen.clearScreen();
   Brain.Screen.printAt(1,20,"autonomous code");
+  
   // place automonous code here
-  while(true){
-  float x = getRedRingX();
-Brain.Screen.printAt(1,20,"Red Ring x =  %.2f   ",x);
-wait(50,msec);
-  }
+
 }
 
 void userControl(void) {
