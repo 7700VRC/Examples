@@ -158,8 +158,8 @@ void preAutonomous(void) {
    //objectDetect();
    getRingX();
     
-    wait(0.3, seconds);
-  wait(5, msec);
+    wait(0.35, seconds);
+  
   }
 }
 
