@@ -62,12 +62,7 @@ void vexcodeInit() {
 }
 
 
-// Helper to make playing sounds from the V5 in VEXcode easier and
-// keeps the code cleaner by making it clear what is happening.
-void playVexcodeSound(const char *soundName) {
-  printf("VEXPlaySound:%s\n", soundName);
-  wait(5, msec);
-}
+
 
 #pragma endregion VEXcode Generated Robot Configuration
 
@@ -88,26 +83,41 @@ using namespace vex;
 
 // Begin project code
 
-float getRedRingX(){
+float getRingX(){
   float x;
-  AIVision1.takeSnapshot(aivision::objdesc(redRing));
-  wait(20,msec);
-   x=AIVision1.objects[0].centerX;
-  Brain.Screen.printAt(1,40,"0 Ring x =  %.2f   ",x);
-   x=AIVision1.objects[1].centerX;
-  Brain.Screen.printAt(1,60,"1 Ring x =  %.2f   ",x);
+  AIVision1.takeSnapshot(aivision::ALL_AIOBJS);
+  
+      // Determine which AI Classification is detected.
+      if (AIVision1.objects[0].id == redRing) {
+        // Conditional based on finding a redRing.
+        Brain.Screen.printAt(1,20,"redRing found     ");
+           x=AIVision1.objects[0].centerX;
+  Brain.Screen.printAt(1,40,"red Ring x =  %.2f   ",x);
+      }
+
+    else{
+Brain.Screen.printAt(1,20,"no red ring found");
+ Brain.Screen.printAt(1,40,"                       ");
+    }
+    if (AIVision1.objects[0].id == blueRing) {
+        // Conditional based on finding a blueRing.
+        Brain.Screen.printAt(1,80,"blue Ring found   ");
+           x=AIVision1.objects[0].centerX;
+  Brain.Screen.printAt(1,100,"blue Ring x =  %.2f   ",x);
+      }
+
+    else{
+Brain.Screen.printAt(1,80,"no blue ring found");
+ Brain.Screen.printAt(1,100,"                       ");
+    }
+  wait(33,msec);
+
   return x;
 }
 
-
-
-void preAutonomous(void) {
-  // actions to do when the program starts
-  Brain.Screen.clearScreen();
-  Brain.Screen.printAt(1,20,"pre auton code");
+float objectDetect(){
+   float x;
  
-    float x;
-  while (true) {
     Brain.Screen.clearScreen();
     Brain.Screen.setCursor(1, 1);
     // Take a snapshot of all AI Classifications.
@@ -134,7 +144,20 @@ void preAutonomous(void) {
       // If no AI Classifications are found in this snapshot, display a message.
       Brain.Screen.print("No Object Found");
     }
-    // Wait some time and restart loop.
+  return x;
+  
+}
+
+void preAutonomous(void) {
+  // actions to do when the program starts
+  Brain.Screen.clearScreen();
+  Brain.Screen.printAt(1,20,"pre auton code");
+ 
+    float x;
+  while (true) {
+   //objectDetect();
+   getRingX();
+    
     wait(0.3, seconds);
   wait(5, msec);
   }
