@@ -17,9 +17,9 @@ competition Competition;
 // define your global instances of motors and other devices here
 brain Brain;
 controller Controller1;
-motor29 LM= motor29(Brain.ThreeWirePort.A, false);
-motor29 RM= motor29(Brain.ThreeWirePort.B, true);
-motor29 Claw = motor29(Brain.ThreeWirePort.C);
+motor29 LM= motor29(Brain.ThreeWirePort.A, true);
+motor29 RM= motor29(Brain.ThreeWirePort.B, false);
+motor29 Claw = motor29(Brain.ThreeWirePort.C, false);
 
 
 void drive(int lspeed, int rspeed, int wt){
@@ -79,8 +79,8 @@ void usercontrol(void) {
 
     drive(Controller1.Axis3.position(),Controller1.Axis2.position(), 10);
 
-    if(Controller1.ButtonR1.pressing()) claw(100);
-    else if(Controller1.ButtonR2.pressing()) claw(-100);
+    if(Controller1.ButtonR1.pressing()) claw(50);
+    else if(Controller1.ButtonR2.pressing()) claw(-50);
     else claw(0);
     
   }
